@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asana-Vision AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Margarine&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marhey:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Linden+Hill&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<div id="row">
+<div id="top">
+  <h1>Asana-Vision AI</h1>
+  <p id="welcome">Welcome to your AI Powered Yoga Trainer!</p>
+</div>
+<div id="wrapper2">
+    <div id="left-wrapper">
+        <div id="left">
+        </div>
+    </div>
+
+    <div id="right">
+        <div id="wrapper0">
+          <p id="asanaSelect">Choose your concern</p>
+          <div id="wrapper">
+            <button class="scroll-btn left" aria-label="Scroll Left">
+
+              <svg width="24" height="24" fill="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="carousel-container">
+  <div class="pose-card" data-pose="poorPosture" style="background-image: url('{{ url_for('static', filename='images/Poor Posture.jpg') }}')">
+    <div id="glass">Poor Posture</div>
+  </div>
+
+  <div class="pose-card" data-pose="balanceCoord" style="background-image: url('{{ url_for('static', filename='images/Balance & Coordination.jpg') }}')">
+    <div id="glass">Balance & Coordination</div>
+  </div>
+
+  <div class="pose-card" data-pose="jointPain" style="background-image: url('{{ url_for('static', filename='images/Joint Pain & Stiffness.jpg') }}')">
+    <div id="glass">Joint Pain or Stiffness</div>
+  </div>
+
+  <div class="pose-card" data-pose="tightHamstrings" style="background-image: url('{{ url_for('static', filename='images/Tight Hamstrings.png') }}')">
+    <div id="glass">Tight Hamstrings</div>
+  </div>
+
+  <div class="pose-card" data-pose="neckShoulder" style="background-image: url('{{ url_for('static', filename='images/Neck & Shoulder Tension.jpg') }}')">
+    <div id="glass">Neck and shoulder tension</div>
+  </div>
+
+  <div class="pose-card" data-pose="stress" style="background-image: url('{{ url_for('static', filename='images/Stress.jpg') }}')">
+    <div id="glass">Stress</div>
+  </div>
+
+  <div class="pose-card" data-pose="spineFlex" style="background-image: url('{{ url_for('static', filename='images/Posture, Waist Toning & Spine Flexibility.png') }}')">
+    <div id="glass">Spine Flexibility</div>
+  </div>
+</div>
+
+
+            <button class="scroll-btn right" aria-label="Scroll Right">
+        <!-- Right arrow SVG -->
+              <svg width="24" height="24" fill="currentColor"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+            </div> 
+            <div id="bottom">
+          <form id="form" action="{{ url_for('start') }}" method="post" hidden>
+            <input type="hidden" name="asana" id="selectedPoseInput">
+          </form>
+
+          <p id="warningMsg" style="color: red; font-weight: bold; display: none; margin-top: 10px;">
+            Please select your cause of concern.
+          </p>
+          <button type="submit" id="start">See Suggested Poses</button>
+          <p id="quote">Breathe deep, move gently... Every Asana is progress!</p>
+        </div>       
+        </div>
+    </div>
+</div>
+
+</div>
+<script>
+const cards = document.querySelectorAll('.pose-card');
+const hiddenInput = document.getElementById('selectedPoseInput');
+const carousel = document.querySelector('.carousel-container');
+const leftBtn = document.querySelector('.scroll-btn.left');
+const rightBtn = document.querySelector('.scroll-btn.right');
+
+function updateScrollButtons() {
+  const scrollLeft = carousel.scrollLeft;
+  const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+
+  leftBtn.style.visibility = scrollLeft <= 5 ? 'hidden' : 'visible';
+  rightBtn.style.visibility = scrollLeft >= maxScrollLeft - 5 ? 'hidden' : 'visible';
+}
+function getCards() {
+  return document.querySelectorAll('.pose-card');
+}
+getCards().forEach(card => {
+  card.addEventListener('click', () => {
+    const cards = getCards();
+
+    // If already clicked — unselect it
+    if (card.classList.contains('clicked')) {
+      card.classList.remove('clicked');
+      hiddenInput.value = ""; // clear hidden input
+    } else {
+      // First remove clicked from all, then add to this
+      cards.forEach(c => c.classList.remove('clicked'));
+      card.classList.add('clicked');
+      hiddenInput.value = card.dataset.pose;
+    }
+    warningMsg.style.display = 'none';
+  });
+});
+
+
+function updateSelectedCard() {
+  const cards = getCards(); // fresh list
+  const carouselRect = carousel.getBoundingClientRect();
+  const centerX = carouselRect.left + carouselRect.width / 2;
+
+  let closestCard = null;
+  let closestDistance = Infinity;
+
+  cards.forEach(card => {
+    const cardRect = card.getBoundingClientRect();
+    const cardCenterX = cardRect.left + cardRect.width / 2;
+    const distance = Math.abs(centerX - cardCenterX);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestCard = card;
+    }
+  });
+
+  if (closestCard) {
+    cards.forEach(c => c.classList.remove('selected'));
+    closestCard.classList.add('selected');
+
+    if (![...cards].some(c => c.classList.contains('clicked'))) {
+      cards.forEach(c => c.classList.remove('clicked'));
+      closestCard.classList.add('clicked');
+    }
+
+    hiddenInput.value = closestCard.dataset.pose;
+  }
+}
+
+const submitBtn = document.getElementById('start');
+const warningMsg = document.getElementById('warningMsg');
+
+leftBtn.addEventListener('click', () => {
+  carousel.scrollBy({ left: -200, behavior: 'smooth' });
+});
+rightBtn.addEventListener('click', () => {
+  carousel.scrollBy({ left: 200, behavior: 'smooth' });
+});
+
+carousel.addEventListener('scroll', () => {
+  updateSelectedCard();
+  updateScrollButtons();
+});
+
+window.addEventListener('load', () => {
+  updateSelectedCard();
+  updateScrollButtons();
+});
+submitBtn.addEventListener('click', () => {
+  if (!hiddenInput.value) {
+    warningMsg.style.display = 'block';
+  } else {
+    warningMsg.style.display = 'none';
+    localStorage.setItem("selectedProb", hiddenInput.value);
+    console.log(hiddenInput.value);
+    document.getElementById("form").submit();
+  }
+});
+
+</script>
+
+</body>
+</html>

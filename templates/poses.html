@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommended Yoga Poses</title>
+  <style>
+    body {
+      background: linear-gradient(to top, #ffb347, #ff7e5f);
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #2F242C;}
+    h1,h2{
+      font-family: 'Margarine', cursive;
+    color: #EFF2F1;
+    font-weight: 80;
+    }
+
+    img {
+      background-size: cover;
+      width: 80%;
+      height: 70%;
+      border-radius: 5px;
+    }
+
+    .pose-section {
+      background-color:#b26bdb;
+      margin: 7vh 7vw;
+      padding: 20px;
+      padding-top: 10px;
+      border-radius: 15px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .pose-section:hover {
+  background-color: #9b60bd; /* slightly brighter green */
+  box-shadow: 0 0 15px #9b60bd; /* soft glow */
+  transform: scale(1.03); /* slight zoom-in effect */
+}
+
+    #wrapper {
+      display: grid;
+      grid-template-columns: 2.5fr 1.5fr;
+      gap: 2%;
+    }
+
+    iframe {
+      width: 60%;
+      max-width: 560px;
+      height: 60%;
+      margin-top: 15px;
+      border: none;
+    }
+
+    #inner-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
+    #start, #back {
+      color: #fff;
+      background-color: #2a99c2;
+      height: 6.5vh;
+      width: 15vw;
+      font-size: 3vh;
+      border-radius: 20px;
+      border: none;
+      font-family: 'Linden Hill', serif;
+      margin-bottom: 3%;
+    }
+
+    #start:hover, #back:hover {
+      background-color: #165a72;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+    }
+    #wrapper-1{
+      display: flex;
+      justify-content: space-evenly;;
+    }
+    strong{
+      color:#EDD892;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center; font-size:6vh;">Recommended Poses for You</h1>
+  <p style="text-align:center; font-size: 3.5vh;margin-top: -2%" id="line">Pick the poses that feel right for you</p>
+  <div id="poses-container"></div>
+
+  <div id="wrapper-1">
+    <form action="{{ url_for('practice') }}" method="POST">
+      <input type="hidden" name="asana" id="asana-input" value="{{asana}}">
+      <button type="submit" id="start">Practice Now</button>
+    </form>
+    <button id="back" onclick="window.location.href='{{ url_for('index') }}'">Start Over</button>
+  </div>
+
+  <script>
+    const yogaPoses = [
+  {
+    name: "Trikonasana (Triangle Pose)",
+    history: "The name comes from Sanskrit: “Trikona” means triangle and “Asana” means pose. Trikonasana is referenced in traditional Hatha Yoga texts and has been practiced for centuries as part of asana sequences to build strength and clarity. It symbolizes stability, grounding, and inner focus.",
+    description: "Trikonasana is a classic standing yoga pose where the legs are wide apart, one hand reaches down to the foot (or shin), and the other stretches upward, forming a triangle shape with the body. It improves alignment, flexibility, and balance.",
+    benefits: ["Stretches hamstrings, hips, and spine",
+"Strengthens legs, knees, ankles",
+"Improves digestion and stimulates abdominal organs",
+"Enhances balance and concentration",
+"Opens chest and shoulders, improving breathing"],
+    recTime: "Hold for 30 seconds to 1 minute on each side, Can be done *1-3 rounds per session",
+    image: "Trikonasana (Triangle Pose).png",
+    video: "https://youtu.be/FSdVBFpT6i4?si=wIev2KuZFvPMZhOD"
+  },
+  {
+    name: "Utkatasana (Chair Pose)",
+    history: "Derived from Sanskrit, “Utkata” means powerful, fierce, or intense, and “Asana” means pose. Chair Pose is rooted in ancient Hatha Yoga and represents inner strength and endurance. It was traditionally used to build heat and stamina.",
+    description: "Utkatasana, or Chair Pose, is a powerful standing pose that mimics the act of sitting in an imaginary chair. The posture activates and strengthens the lower body and engages the core and spine.",
+    benefits: ["Strengthens thighs, calves, ankles, and spine",
+"Tones abdominal organs and core","Increases balance and stability","Builds endurance and body awareness","Stimulates the heart and diaphragm"],
+    recTime: "Hold for 30 seconds to 1 minute, Repeat for 2–3 rounds based on comfort level",
+image: "Utkatasana (Chair Pose).png",
+    video: "https://youtu.be/4xyTmX_OMiM?si=cOGbIbNdfQw2z9qG"
+  },
+  {
+    name: "Virabhadrasana II (Warrior II)",
+    history: "The name comes from *Virabhadra*, a fierce warrior created by Lord Shiva in Hindu mythology. This pose symbolizes courage, determination, and readiness for battle. It is a modern adaptation within traditional Hatha Yoga practice.",
+    description: "Virabhadrasana II, or Warrior II, is a powerful standing pose that strengthens and stretches the body while building mental focus. The pose involves a wide stance, with one knee bent and the arms extended parallel to the ground.",
+    image: "Virabhadrasana II (Warrior II).png",
+    video: "https://youtu.be/Mn6RSIRCV3w?si=rkuGuWFbdabS5bD1",
+    recTime: "Hold for 30 seconds to 1 minute on each side, Repeat for 2 rounds",
+    benefits: ["Strengthens legs, knees, and ankles","Improves stamina and concentration","Opens hips and chest","Enhances balance and stability","Relieves backaches in the second trimester of pregnancy"]
+  },
+  {
+    name: "Virabhadrasana I (Warrior I)",
+    history: "Named after *Virabhadra*, a fierce warrior created by Lord Shiva in Hindu mythology. The pose symbolizes strength, determination, and focused energy.",
+    description: "A powerful standing pose where one leg lunges forward, the back leg is extended, and arms reach upward. The chest faces forward while the hips square.",
+    image: "Virabhadrasana I (Warrior I).png",
+    video: "https://youtu.be/kkGY3xBnaGc?si=nwiRFdCbQph6HlTR",
+    benefits: ["Builds strength in legs, hips, and shoulders","Opens the chest and lungs","Enhances stamina and stability","Improves focus and coordination","Stretches calves and ankles"],
+    recTime: "Hold for 30–60 seconds* per side, Repeat 1–2 rounds",
+
+  },
+  {
+    name: "Tadasana (Mountain Pose)",
+    history: "“Tada” means *mountain* in Sanskrit. This pose is considered the base for all standing yoga postures, symbolizing strength, stability, and stillness—like a mountain.",
+    description: "A foundational standing pose where the body is aligned upright with feet together, arms by the sides or overhead, and spine tall. It promotes balance, posture, and awareness.",
+    image: "Tadasana (Mountain Pose).png",
+    video: "https://www.youtube.com/watch?v=5NxDs-ovJU8&pp=ygUYVGFkYXNhbmEgKE1vdW50YWluIFBvc2Up",
+    benefits: ["Improves posture and body awareness","Strengthens thighs, knees, and ankles","Increases energy and focus","Helps in relieving sciatica","Prepares the body for other poses"],
+    recTime: "Hold for 30 seconds to 1 minute, Practice in 2–3 rounds for grounding and alignment",
+  },
+  {
+    name: "Swasthikasana (Auspicious Pose)",
+    history: '“Swastika” in Sanskrit means “auspicious” or “good fortune.” This pose has been used for centuries in yogic and spiritual traditions as a grounding seat for inner focus.',
+    description: "A simple seated posture where the legs are crossed with the feet tucked between the thighs and calves, creating a stable base for meditation and breathing exercises.",
+    video: "https://www.youtube.com/watch?v=VFxHrDey37U&pp=ygUeU3dhc3Rpa2FzYW5hIChBdXNwaWNpb3VzIFBvc2Up",
+    benefits: ["Calms the mind and prepares for meditation","Opens hips and strengthens back muscles","Promotes stillness and body awareness","Enhances posture and spinal alignment"],
+    recTime:"Sit for 5–15 minutes or longer if comfortable, Ideal for meditation or pranayama sessions",
+    image: "Swastikasana (Auspicious Pose).png"
+  },
+  {
+    name: "Ardha Uttanasana (Standing Half Forward Bend)",
+    history: "This pose is a part of Hatha Yoga and has roots in traditional yogic practices. It is commonly practiced in both beginner and advanced levels to prepare the body for deeper forward bends and other asanas.",
+    description: " Ardha Uttanasana is a standing yoga pose where you fold forward from the hips while keeping your back straight. It stretches the hamstrings, spine, and shoulders, while strengthening the core and improving balance.",
+    image: "Ardha Uttanasana (Half Forward Bend).png",
+    video: "https://youtu.be/2_yNresGBQE?si=EkJAuJDdCsEkoWDN",
+    recTime: "Typically, the pose is held for 15-30 seconds, with a focus on deep breathing. It can be repeated for several rounds as part of a warm-up or yoga sequence.",
+    benefits: ["Stretches the hamstrings, calves, and spine"," Improves posture and spinal alignment.","Increases flexibility in the hips and legs.","Helps strengthen the core and back muscles.","Relieves stress and promotes mental clarity.","Improves digestion by stimulating abdominal organs."]
+  },
+  {
+    name: "Eka Pada Pranama (One-Legged Prayer Pose)",
+    history: "This pose is often found in traditional Hatha and Vinyasa yoga practices. It’s inspired by various one-legged poses in yoga, meant to strengthen the body and enhance mental clarity.",
+    description: "Eka Pada Pranam is a balancing pose where you stand on one leg, while the other leg is bent, and your hands come into a prayer position in front of your chest. It helps improve focus, balance, and flexibility",
+    image: "Eka Pada Pranam (One-Legged Prayer Pose).png",
+    video: "https://www.youtube.com/watch?v=5zOVLS1dABo&pp=ygUoRWthIFBhZGEgUHJhbmFtIChPbmUtbGVnZ2VkIHByYXllciBwb3NlKdIHCQmLCQGHKiGM7w%3D%3D",
+    benefits: ["Improves balance and stability.","Strengthens the legs, core, and back","Opens the hips and stretches the quadriceps","Improves focus and mental clarity.","Enhances flexibility in the lower body.","Helps with posture and body alignment."],
+    recTime: "Typically held for 15-30 seconds per side, focusing on breath and stability. It can be repeated several times in a sequence."
+  },
+  {
+    name: "Uttanasana (Standing Forward Bend)",
+    history: "A foundational pose in Hatha Yoga, Uttanasana is part of the traditional sun salutation sequence. It’s meant to calm the mind while stretching and lengthening the body.",
+    description: "Uttanasana is a standing yoga pose where you bend forward from the hips, allowing the torso to hang towards the floor with the legs straight. It’s a deep stretch for the hamstrings and spine.",
+    image: "Uttanasana (Standing Forward Bend).png",
+    video: "https://www.youtube.com/watch?v=WklJNYaayP8&pp=ygUiVXR0YW5hc2FuYSAoU3RhbmRpbmcgRm9yd2FyZCBCZW5kKQ%3D%3D",
+    recTime: "Generally held for 15-60 seconds, depending on your flexibility level. It’s often practiced multiple times in a flow or sequence.",
+    benefits:[" Stretches the hamstrings, calves, and lower back.","Improves flexibility and circulation.","Relieves tension in the neck and shoulders.","Calms the mind and reduces stress.","Helps improve posture."]
+  },
+  {
+    name: "Pranama (Prayer Pose)",
+    history: "Rooted in ancient Indian culture and yoga, Pranam is a symbol of respect and gratitude. It is commonly seen in various spiritual practices and is used as a greeting or offering of respect.",
+    description: "Pranam, or Prayer Pose, involves standing with feet together, palms pressed together in front of the chest in a prayer position. It is a gesture of reverence, often used at the beginning or end of a yoga practice or meditation.",
+    image: "Pranam (Prayer Pose).png",
+    video: "https://www.youtube.com/watch?v=i6WMc217EnU&pp=ygUUUHJhbmFtIChQcmF5ZXIgUG9zZSk%3D",
+    benefits: ["Promotes a sense of calm and centeredness.","Encourages mindfulness and presence","Improves posture and alignment.","Calms the nervous system.","Fosters a deeper connection to one's spiritual practice."],
+    recTime: "Typically held for a few breaths (5-10 seconds), but it can be held longer during meditation or as a mindful gesture."
+  },
+  {
+    name: "Parsva Tadasana (Side Stretch Pose)-Right",
+    history: "A variation of Tadasana (Mountain Pose), Parsva Tadasana is commonly used to improve flexibility and to prepare the body for deeper side stretches in yoga practice",
+    description: "Parsva Tadasana is a standing yoga pose that involves reaching one arm overhead while the other arm stays by the side, creating a side stretch of the body. It helps lengthen the spine and stretch the sides of the torso.",
+    image: "Parsva Tadasana (Side Stretch).png",
+    video: "https://www.youtube.com/watch?v=8JKElzNUAU8&pp=ygUsU3RhbmRpbmcgU2lkZSBTdHJldGNoIFBvc2UgKFBhcnN2YSBUYWRhc2FuYSk%3D",
+    benefits: ["Stretches the sides of the torso, hips, and ribs.","Improves spinal flexibility and length","Strengthens the core and shoulders.","Improves posture and alignment.","Increases lung capacity and breath awareness.","Stimulates the digestive system."],
+    recTime: "Typically held for 15-30 seconds per side, focusing on deep breathing. It can be repeated several times in a sequence or held longer for deeper stretch and relaxation."
+  },
+   {
+    name: "Parsva Tadasana (Side Stretch Pose)-Left",
+    history: "A variation of Tadasana (Mountain Pose), Parsva Tadasana is commonly used to improve flexibility and to prepare the body for deeper side stretches in yoga practice",
+    description: "Parsva Tadasana is a standing yoga pose that involves reaching one arm overhead while the other arm stays by the side, creating a side stretch of the body. It helps lengthen the spine and stretch the sides of the torso.",
+    image: "Parsva Tadasana (Side Stretch).png",
+    video: "https://www.youtube.com/watch?v=8JKElzNUAU8&pp=ygUsU3RhbmRpbmcgU2lkZSBTdHJldGNoIFBvc2UgKFBhcnN2YSBUYWRhc2FuYSk%3D",
+    benefits: ["Stretches the sides of the torso, hips, and ribs.","Improves spinal flexibility and length","Strengthens the core and shoulders.","Improves posture and alignment.","Increases lung capacity and breath awareness.","Stimulates the digestive system."],
+    recTime: "Typically held for 15-30 seconds per side, focusing on deep breathing. It can be repeated several times in a sequence or held longer for deeper stretch and relaxation."
+  }
+];
+
+    const poseMap = {
+  poorPosture: [
+    "Tadasana (Mountain Pose)",
+    "Virabhadrasana II (Warrior II)",
+    "Parsva Tadasana (Side Stretch Pose)-Left",
+    "Parsva Tadasana(Side Stretch Pose)-Right"
+  ],
+  balanceCoord: [
+    "Eka Pada Pranama (One-Legged Prayer Pose)",
+    "Utkatasana (Chair Pose)",
+    "Pranama (Prayer Pose)"
+  ],
+  jointPain: [
+    "Eka Pada Pranama (One-Legged Prayer Pose)",
+    "Virabhadrasana I (Warrior I)"
+  ],
+  tightHamstrings: [
+    "Uttanasana (Standing Forward Bend)",
+    "Trikonasana (Triangle Pose)"
+  ],
+  neckShoulder: [
+    "Uttanasana (Standing Forward Bend)"
+  ],
+  stress: [
+    "Swasthikasana (Auspicious Pose)"
+  ],
+  spineFlex: [
+    "Uttanasana (Standing Forward Bend)",
+    "Parsva Tadasana (Side Stretch Pose)-Left",
+    "Parsva Tadasana(Side Stretch Pose)-Right"
+  ]
+};
+
+
+    const selectedProb = localStorage.getItem("selectedProb");
+    const targetNames = poseMap[selectedProb] || [];
+    const container = document.getElementById("poses-container");
+
+    yogaPoses.forEach(pose => {
+      if (targetNames.includes(pose.name)) {
+        const section = document.createElement("div");
+        section.className = "pose-section";
+        section.setAttribute("data-asana", pose.name);
+
+
+        section.innerHTML = `<h2>${pose.name}</h2>
+          <div id="wrapper">
+            <div id="inner-wrapper">
+              <p><strong>ABOUT:</strong> ${pose.description}</p>
+              <p><strong>HISTORY:</strong> ${pose.history}</p>
+              <p><strong>RECOMMENDED TIME:</strong> ${pose.recTime}</p>
+              <div>
+              <p><strong>BENEFITS:</strong></p>
+              <ul>${pose.benefits.map((benefit)=> `<li>${benefit}</li>`).join('')
+              }</ul></div>
+              <a href="${pose.video}">Refer for a video description</a>
+            </div>
+          <div class="space" id="inner-wrapper">
+          <img src="/static/images/${pose.image}" alt="${pose.name}">
+          </div>
+        `;
+        section.addEventListener("click", () => {
+      const selectedPose = pose.name;
+      localStorage.setItem("selectedPose", selectedPose);
+
+      // Optional: highlight selection
+      section.style.border = "2px solid #2a99c2";
+      section.style.boxShadow = "0 7px 15px rgba(42, 153, 194, 0.4)"; // soft blue glow
+ section.style.borderRadius = "12px";
+    });
+
+        container.appendChild(section);
+
+      }
+    });
+     document.getElementById("start").addEventListener("click", function (e) {
+  const currentPose = localStorage.getItem("selectedPose");
+
+  if (!currentPose) {
+    alert("Please select a pose before starting!");
+    e.preventDefault();
+    return;
+  }
+  console.log(currentPose);
+  document.getElementById("asana-input").value = currentPose;
+});
+
+  </script>
+</body>
+</html>
